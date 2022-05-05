@@ -12,6 +12,7 @@ public class Settings {
 	private int colGuild = 4;
 	private int colRating = 1;
 	private boolean ratingDESC = true;
+	private boolean ignoreGuilds = false;
 
 	public int getColBallotID() {
 		return colBallotID;
@@ -101,12 +102,21 @@ public class Settings {
 		this.ratingDESC = ratingDESC;
 	}
 
+	public boolean isIgnoreGuilds() {
+		return ignoreGuilds;
+	}
+
+	public void setIgnoreGuilds(boolean ignoreGuilds) {
+		this.ignoreGuilds = ignoreGuilds;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Filename: ").append(filename).append(System.lineSeparator());
 		sb.append("Seats: ").append(seats).append(System.lineSeparator());
 		sb.append("Blank votes: ").append(blank).append(System.lineSeparator());
+		sb.append("Ignoring guilds: ").append(isIgnoreGuilds() ? "yes" : "no").append(System.lineSeparator());
 		sb.append("Rating order: ").append(ratingDESC ? "DESC" : "ASC").append(System.lineSeparator());
 		sb.append("CSV file settings:").append(System.lineSeparator());
 		sb.append(" Have header: ").append(hasCSVHeader ? "yes" : "no").append(System.lineSeparator());

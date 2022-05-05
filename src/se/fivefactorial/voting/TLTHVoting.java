@@ -1,6 +1,7 @@
 package se.fivefactorial.voting;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class TLTHVoting {
 				System.out.println("-ds [S]\t\t--data-separator [S]\tstring to separate csv data");
 				System.out.println("-desc\t\t\t\t\tOrder rating descending");
 				System.out.println("-asc\t\t\t\t\tOrder rating ascending");
+				System.out.println("-ig \t --ignoreGuilds \t\tIgnore Guild mandates");
 				System.exit(0);
 				break;
 			case "-s":
@@ -91,6 +93,10 @@ public class TLTHVoting {
 				break;
 			case "-asc":
 				settings.setRatingDESC(false);
+				break;
+			case "-ig":
+			case "--ignoreGuilds":
+				settings.setIgnoreGuilds(true);
 				break;
 			}
 
@@ -155,10 +161,15 @@ public class TLTHVoting {
 		System.out.println("### STEP 3: Voting ###############");
 		Voting voting = new Voting(settings, candidateList, ballotList);
 
-		System.out.println(" Calculating guaranteed mandates for the guilds...");
-		List<Candidate> guaranteed = voting.calculateGuaranteed();
-		for (Candidate candidate : guaranteed) {
-			System.out.printf(" %s - %s\n", candidate.getGuild(), candidate.getName());
+		List<Candidate> guaranteed = new ArrayList<>();
+		if (!settings.isIgnoreGuilds()) {
+			System.out.println(" Calculating guaranteed mandates for the guilds...");
+			guaranteed = voting.calculateGuaranteed();
+			for (Candidate candidate : guaranteed) {
+				System.out.printf(" %s - %s\n", candidate.getGuild(), candidate.getName());
+			}
+		} else {
+			System.out.println(" OBS: Ignoring guild mandates");
 		}
 		System.out.println(" Calculating remaining seats...");
 		Result result = voting.calculateRegular(guaranteed);
